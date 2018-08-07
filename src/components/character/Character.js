@@ -6,15 +6,13 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // Presentational
-const Scene = (props) => (
-  <div className={props.classes.root}>
-    {props.children}
-  </div>
+const Character = (props) => (
+  <div className={props.classes.root}>SNAKE</div>
 )
 
 // Props
-Scene.propTypes = {
+Character.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Scene)
+export default withStyles(styles)(Character)

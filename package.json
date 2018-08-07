@@ -4,8 +4,8 @@
   "description": "Snake Game in React/Redux",
   "main": "index.ejs",
   "scripts": {
-    "build": "cross-env NODE_ENV=prod webpack --display-error-details",
-    "start": "cross-env NODE_ENV=dev webpack-dev-server"
+    "build": "cross-env NODE_ENV=prod webpack --mode production",
+    "start": "cross-env NODE_ENV=dev webpack-dev-server --open --mode development"
   },
   "repository": {
     "type": "git",
@@ -42,7 +42,6 @@
     "babel-loader": "^7.1.5",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",

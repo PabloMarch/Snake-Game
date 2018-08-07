@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 // Actions
 // import { } from 'src/store/vehicles-list/actions'
@@ -11,7 +11,23 @@ import Scene from './Scene'
 class SceneContainer extends Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = { width: 0, height: 0 }
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions = () => {
+    this.setState({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
   }
 
   render () {
