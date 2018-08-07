@@ -5,8 +5,11 @@
   "main": "index.ejs",
   "scripts": {
     "build": "cross-env NODE_ENV=prod webpack --mode production",
-    "start": "cross-env NODE_ENV=dev webpack-dev-server --open --mode development"
+    "start": "cross-env NODE_ENV=dev webpack-dev-server --open --mode development",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://pablomarch.github.io/snake-game/",
   "repository": {
     "type": "git",
     "url": "git@github.com:PabloMarch/snake-game.git"
