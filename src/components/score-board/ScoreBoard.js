@@ -21,7 +21,8 @@ const ScoreBoard = (props) => (
       <Typography variant="title" color="inherit" className={props.classes.flex}>
         Snake React Game
       </Typography>
-      <Button color="inherit">New</Button>
+      <Button href="https://github.com/pablomarch/snake-game" color="inherit">GitHub</Button>
+      <Button color="inherit">Start</Button>
     </Toolbar>
   </AppBar>
 )

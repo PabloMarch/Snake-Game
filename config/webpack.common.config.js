@@ -19,6 +19,7 @@ const config = {
   resolve: {
     alias: {
       components: PATHS.components,
+      store: PATHS.store,
       src: PATHS.app
     },
     extensions: ['*', '.js', '.jsx', '.jss', '.json']

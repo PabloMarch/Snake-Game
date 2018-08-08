@@ -1,10 +1,10 @@
-import { handleActions } from 'redux-actions'
+import { handleActions, combineActions } from 'redux-actions'
 
 // Actions
-import { scene } from './actions'
+import { setSceneSize, setCurrentKey } from './actions'
 
 export default handleActions({
-  [scene] (state, { payload }) {
+  [ combineActions(setSceneSize, setCurrentKey) ] (state, { payload }) {
     return { ...state, ...payload }
   }
 }, {})

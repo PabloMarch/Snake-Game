@@ -7,4 +7,5 @@ import gameSetup from 'src/data/gameSetup'
 const delay = ms => new Promise(resolve => setTimeout(() => resolve(gameSetup), ms));
 
 // Actions
-export const setScene = createAction('SET_SCENE')
+export const setSceneSize = createAction('SET_SCENE_SIZE')
+export const setCurrentKey = createAction('SET_CURRENT_KEY')
