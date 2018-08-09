@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import Bug from '@material-ui/icons/BugReport'
+import Icon from '@material-ui/core/Icon'
 
 // Components
 import styles from './styles'
 
 // Presentational
-const Item = (props) => (
+const Item = props => (
   <div className={props.classes.root}>
-    <Bug />
+    <Icon>bug_report</Icon>
   </div>
 )
 

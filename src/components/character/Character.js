@@ -1,32 +1,31 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
-// Context
-import { SceneContext } from 'components/scene'
-
 // Components
+import Icon from '@material-ui/core/Icon'
+
+// Styles
 import styles from './styles'
 
-// temporal values
-let frameCount = 0
-
 // Presentational
-const Character = (props) => (
-  <SceneContext.Consumer>
-    {({ animationInterval }) => {
-      // temporal values
-      let sinceStart = (animationInterval / 1000 * 100) / 100 | 0
-      let currentFps = Math.round(1000 / (animationInterval / ++frameCount) * 100) / 100
+const Character = props => (
+  <Fragment>
+    {props.body.map((item, key) => {
+      const style = {
+        left: item.x,
+        top: item.y
+      }
 
-      return <div className={props.classes.root}>{`Elapsed time: ${sinceStart} secs @ ${currentFps} fps.`}</div>
-    }}
-  </SceneContext.Consumer>
+      return <Icon key={key} className={props.classes[item.type]} style={style}>{item.icon}</Icon>
+    })}
+  </Fragment>
 )
 
 // Props
 Character.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  style: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(Character)

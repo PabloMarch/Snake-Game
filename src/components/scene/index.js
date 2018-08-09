@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { setSceneSize, setCurrentKey } from 'store/scene/actions'
+import { fetchGameSettings, setSceneSize, setCurrentKey, pauseGame } from 'store/scene/actions'
 
 // Presentational
 import Scene from './Scene'
@@ -15,86 +15,114 @@ class SceneContainer extends Component {
   constructor (props) {
     super(props)
 
-    this.fpsInterval = 1000 / 4 // fps
+    this.frameCount = 0
 
     this.state = {
+      isFetching: true,
       animation: {
-        stopedAnim: false,
         animationInterval: 0
       }
     }
   }
 
   componentDidMount() {
+    // fetch initial settings
+    this.props.fetchGameSettings()
+      .then(() => {
+        this.setState({ isFetching: false })
+
+        // start animation
+        this.startLoop()
+      })
+
     // set viewport size
-    this.updateWindowDimensions()
+    this.onViewportSizeUpdate()
 
     // recalculate viewport size
-    window.addEventListener('resize', this.updateWindowDimensions)
-
-    // start animation
-    this.startLoop()
+    window.addEventListener('resize', this.onViewportSizeUpdate)
   }
 
   componentWillUnmount() {
     // remove viewport resizing listener
-    window.removeEventListener('resize', this.updateWindowDimensions)
+    window.removeEventListener('resize', this.onViewportSizeUpdate)
 
     // remove animationFrame loop
     this.stopLoop()
   }
 
-  updateWindowDimensions = () => {
-    this.props.setSceneSize({
-      width: window.innerWidth,
-      height: window.innerHeight
-    })
-  }
-
   startLoop() {
     // animationFrame settings
-    this.then = Date.now()
-    this.startTime = this.then
+    this.pastTime = Date.now()
+    this.startTime = this.pastTime
+    this.fpsInterval = 1000 / this.props.scene.fps // fps
 
     // create animationFrame
-    if( !this._frameId ) this._frameId = window.requestAnimationFrame( this.loop )
+    if( !this.frameId ) {
+      this.frameId = window.requestAnimationFrame( this.loop )
+    }
   }
 
   stopLoop() {
-    window.cancelAnimationFrame( this._frameId )
+    window.cancelAnimationFrame( this.frameId )
   }
 
   loop = time => {
-    if (this.stopedAnim) return
-
-    // calc elapsed time since last loop
-    let now = Date.now()
-    let elapsed = now - this.then
-    let animationInterval = now - this.startTime
-
     // set up next iteration of the loop
     this.frameId = window.requestAnimationFrame( this.loop )
 
+    // pause rendering
+    if(this.props.scene.isGamePaused) return
+
+    // calc elapsed time since last loop
+    let currTime = Date.now()
+    let elapsed = currTime - this.pastTime
+    let animationInterval = currTime - this.startTime
+
     // check fps
     if (elapsed > this.fpsInterval) {
-      this.then = now - (elapsed % this.fpsInterval)
-
+      this.pastTime = currTime - (elapsed % this.fpsInterval)
       this.setState({ animation: { animationInterval } })
     }
+  }
 
+  onViewportSizeUpdate = () => {
+    this.props.setSceneSize({
+      sceneWidth: window.innerWidth,
+      sceneHeight: window.innerHeight
+    })
   }
 
   onKeyDown = e => {
+    const { currentKey, isGamePaused } = this.props.scene
     // keyCodes: space = 32 / enter = 13 / arrows = 37 38 39 40
-    if(e.keyCode !== this.state.currentKey && /(13|32|37|38|39|40)$/.test(e.keyCode)) {
-      this.props.setCurrentKey({ currentKey: e.keyCode })
+    if(/(13|32|37|38|39|40)$/.test(e.keyCode)) {
+      switch (e.keyCode) {
+        case 32:
+          this.props.pauseGame({ isGamePaused: !isGamePaused })
+          break;
+      }
+
+      if(e.keyCode !== currentKey) {
+        this.props.setCurrentKey({ currentKey: e.keyCode })
+      }
     }
   }
 
   render () {
+    // Detail of FPS values
+    let { animationInterval } = this.state.animation
+    let sinceStart = (animationInterval / 1000 * 100) / 100 | 0
+    let currentFps = (Math.round(1000 / (animationInterval / ++this.frameCount) * 100) / 100).toFixed(2)
+
     return (
       <SceneContext.Provider value={this.state.animation}>
-        <Scene {...this.props} onKeyDown={this.onKeyDown} />
+        <Scene
+          {...this.props}
+          isFetching={this.state.isFetching}
+          sinceStart={sinceStart}
+          currentFps={currentFps}
+          onKeyDown={this.onKeyDown}
+        />
       </SceneContext.Provider>
     )
   }
@@ -104,5 +132,5 @@ export { SceneContext }
 
 export default connect(
   ({ scene }) => ({ scene }),
-  { setSceneSize, setCurrentKey }
+  { fetchGameSettings, setSceneSize, setCurrentKey, pauseGame }
 )(SceneContainer)

@@ -1,3 +1,7 @@
 {
-  "data": []
+  "gameSpec": {
+    "blockWidth": 20,
+    "blockHeight": 20,
+    "fps": 24
+  }
 }
