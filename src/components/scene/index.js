@@ -8,7 +8,7 @@ import { fetchGameSettings, setSceneSize, setCurrentKey, pauseGame } from 'store
 import Scene from './Scene'
 
 // Context
-const SceneContext = React.createContext({ animationInterval: 0 })
+const SceneContext = React.createContext()
 
 // Container
 class SceneContainer extends Component {
@@ -19,7 +19,7 @@ class SceneContainer extends Component {
 
     this.state = {
       isFetching: true,
-      animation: {
+      config: {
         animationInterval: 0
       }
     }
@@ -81,7 +81,7 @@ class SceneContainer extends Component {
     // check fps
     if (elapsed > this.fpsInterval) {
       this.pastTime = currTime - (elapsed % this.fpsInterval)
-      this.setState({ animation: { animationInterval } })
+      this.setState({ config: { animationInterval } })
     }
   }
 
@@ -110,12 +110,12 @@ class SceneContainer extends Component {
 
   render () {
     // Detail of FPS values
-    let { animationInterval } = this.state.animation
+    let { animationInterval } = this.state.config
     let sinceStart = (animationInterval / 1000 * 100) / 100 | 0
     let currentFps = (Math.round(1000 / (animationInterval / ++this.frameCount) * 100) / 100).toFixed(2)
 
     return (
-      <SceneContext.Provider value={this.state.animation}>
+      <SceneContext.Provider value={this.state.config}>
         <Scene
           {...this.props}
           isFetching={this.state.isFetching}

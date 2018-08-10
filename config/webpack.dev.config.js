@@ -4,7 +4,7 @@ const PATHS = require('./webpack.paths');
 
 const config = {
     mode: 'development',
-    devtool: 'inline-source-map',
+    devtool: 'eval', // devtool: 'inline-source-map',
     optimization: {
       runtimeChunk: {
         name: 'manifest',
@@ -21,7 +21,8 @@ const config = {
       },
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin()
+      // new webpack.HotModuleReplacementPlugin()
+      new webpack.NamedModulesPlugin()
     ],
     resolve: {
       plugins: [

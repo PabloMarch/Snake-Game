@@ -5,7 +5,7 @@
   "main": "index.ejs",
   "scripts": {
     "build": "cross-env NODE_ENV=prod webpack --mode production",
-    "start": "cross-env NODE_ENV=dev webpack-dev-server --open --mode development",
+    "start": "cross-env NODE_ENV=dev webpack-dev-server --hot --mode development",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -28,6 +28,7 @@
     "es6-promise": "^4.2.4",
     "exports-loader": "^0.7.0",
     "jss": "^9.8.7",
+    "jss-compose": "^5.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -51,6 +52,7 @@
     "css-loader": "^1.0.0",
     "eslint": "^5.1.0",
     "eslint-loader": "^2.1.0",
+    "gh-pages": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.9.3",

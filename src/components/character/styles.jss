@@ -1,12 +1,19 @@
 export default theme => ({
-  head: {
-    color: '#2B4',
-    fontSize: '2em',
+  commons: {
+    fontSize: 24,
+    height: 24,
+    overflow: 'visible',
     position: 'absolute',
-    marginTop: '-4px',
+    width: 24,
+  },
+  head: {
+    composes: '$commons',
+    color: '#6B4',
+    fontSize: '2em',
+    marginTop: -4,
   },
   body: {
+    composes: '$commons',
     color: '#094',
-    position: 'absolute',
   }
 })

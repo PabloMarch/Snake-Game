@@ -7,7 +7,6 @@ const PATHS = require('./webpack.paths');
 
 const config = {
   mode: 'production',
-  // devtool: 'source-map',
   stats: {
     colors: true,
     hash: true,
