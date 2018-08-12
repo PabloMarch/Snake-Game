@@ -1,19 +1,27 @@
 export default theme => ({
-  commons: {
-    fontSize: 24,
-    height: 24,
+  body: {
+    color: '#094',
+    display: 'block',
     overflow: 'visible',
     position: 'absolute',
-    width: 24,
-  },
-  head: {
-    composes: '$commons',
-    color: '#6B4',
-    fontSize: '2em',
-    marginTop: -4,
-  },
-  body: {
-    composes: '$commons',
-    color: '#094',
+
+    '&::before': {
+      content: '"brightness_1"',
+      fontSize: '1.1em',
+      position: 'relative',
+      left: '-0.05em',
+      top: '-0.05em',
+    },
+
+    '&:last-of-type': {
+      color: '#296',
+
+      '&::before': {
+        content: '"brightness_7"',
+        fontSize: '1.3em',
+        left: '-0.125em',
+        top: '-0.125em',
+      }
+    },
   }
 })

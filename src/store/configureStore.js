@@ -8,7 +8,10 @@ let middlewares = [
 ]
 
 if (process.env.NODE_ENV !== 'prod') {
-  middlewares = [ ...middlewares, createLogger ]
+  middlewares = [
+    ...middlewares,
+    // createLogger
+  ]
 }
 
 export default (initialState) => createStore(

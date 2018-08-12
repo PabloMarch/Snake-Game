@@ -11,14 +11,13 @@ import styles from './styles'
 // Presentational
 const Character = props => (
   <Fragment>
-    {props.body.map((item, key) => {
-      const style = {
-        left: item.x,
-        top: item.y
-      }
-
-      return <Icon key={key} className={props.classes[item.type]} style={style}>{item.icon}</Icon>
-    })}
+    {props.body.map((item, key) =>
+      <Icon
+        key={key}
+        className={props.classes.body}
+        style={Object.assign({}, props.style, { left: item.x, top: item.y })}
+      />
+    )}
   </Fragment>
 )
 

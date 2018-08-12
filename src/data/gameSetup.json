@@ -1,5 +1,7 @@
 {
   "gameSpec": {
-    "fps": 24
+    "blockSize": 20,
+    "initialCharLenght": 3,
+    "fps": 8
   }
 }

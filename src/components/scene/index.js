@@ -2,13 +2,17 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { fetchGameSettings, setSceneSize, setCurrentKey, pauseGame } from 'store/scene/actions'
+import {
+  fetchGameSettings,
+  setSceneSize,
+  setCurrentKey,
+  setGameSettings,
+  pauseGame,
+  moveOnDirection
+} from 'store/scene/actions'
 
 // Presentational
 import Scene from './Scene'
-
-// Context
-const SceneContext = React.createContext()
 
 // Container
 class SceneContainer extends Component {
@@ -19,9 +23,7 @@ class SceneContainer extends Component {
 
     this.state = {
       isFetching: true,
-      config: {
-        animationInterval: 0
-      }
+      animationInterval: 0
     }
   }
 
@@ -29,7 +31,14 @@ class SceneContainer extends Component {
     // fetch initial settings
     this.props.fetchGameSettings()
       .then(() => {
+        const { initialCharLenght, blockSize } = this.props.scene
+
+        // hide loader & focus scene
         this.setState({ isFetching: false })
+        this.sceneRef.focus()
+
+        // set initial position for next movement
+        this.props.moveOnDirection({ refX: blockSize * initialCharLenght })
 
         // start animation
         this.startLoop()
@@ -52,8 +61,8 @@ class SceneContainer extends Component {
 
   startLoop() {
     // animationFrame settings
-    this.pastTime = Date.now()
-    this.startTime = this.pastTime
+    this.lastRender = Date.now()
+    this.startTime = this.lastRender
     this.fpsInterval = 1000 / this.props.scene.fps // fps
 
     // create animationFrame
@@ -66,7 +75,7 @@ class SceneContainer extends Component {
     window.cancelAnimationFrame( this.frameId )
   }
 
-  loop = time => {
+  loop = () => {
     // set up next iteration of the loop
     this.frameId = window.requestAnimationFrame( this.loop )
 
@@ -75,14 +84,40 @@ class SceneContainer extends Component {
 
     // calc elapsed time since last loop
     let currTime = Date.now()
-    let elapsed = currTime - this.pastTime
+    let elapsed = currTime - this.lastRender
     let animationInterval = currTime - this.startTime
 
     // check fps
     if (elapsed > this.fpsInterval) {
-      this.pastTime = currTime - (elapsed % this.fpsInterval)
-      this.setState({ config: { animationInterval } })
+      this.lastRender = currTime - (elapsed % this.fpsInterval)
+      this.setState({ animationInterval })
+      this.onUpdateDirection()
     }
+  }
+
+  onUpdateDirection() {
+    const { currentKey, blockSize, refX, refY } = this.props.scene
+
+    // Change direction
+    switch(currentKey) {
+      case 'ArrowLeft':
+        this.props.moveOnDirection({ refX: refX-blockSize })
+        break
+
+      case 'ArrowRight':
+        this.props.moveOnDirection({ refX: refX+blockSize })
+        break
+
+      case 'ArrowUp':
+        this.props.moveOnDirection({ refY: refY-blockSize })
+        break
+
+      case 'ArrowDown':
+        this.props.moveOnDirection({ refY: refY+blockSize })
+        break
+    }
+
+    console.log()
   }
 
   onViewportSizeUpdate = () => {
@@ -94,43 +129,69 @@ class SceneContainer extends Component {
 
   onKeyDown = e => {
     const { currentKey, isGamePaused } = this.props.scene
-    // keyCodes: space = 32 / enter = 13 / arrows = 37 38 39 40
+    let pressedKey = currentKey
+
+    // only allows those keys on game
     if(/(13|32|37|38|39|40)$/.test(e.keyCode)) {
       switch (e.keyCode) {
-        case 32:
+        case 13: // enter
+          console.log('Show Menu...')
+          break
+
+        case 32: // space
           this.props.pauseGame({ isGamePaused: !isGamePaused })
-          break;
+          break
+
+        case 37: // left
+          if (currentKey != 'ArrowRight') pressedKey = 'ArrowLeft'
+          break
+
+        case 38: // up
+          if (currentKey != 'ArrowDown') pressedKey = 'ArrowUp'
+          break
+
+        case 39: // right
+          if (currentKey != 'ArrowLeft') pressedKey = 'ArrowRight'
+          break
+
+        case 40: // down
+          if (currentKey != 'ArrowUp') pressedKey = 'ArrowDown'
+          break
       }
 
-      if(e.keyCode !== currentKey) {
-        this.props.setCurrentKey({ currentKey: e.keyCode })
+      if(pressedKey && currentKey !== e.key) {
+        this.props.setCurrentKey({ currentKey: pressedKey })
       }
     }
   }
 
-  render () {
+  render() {
     // Detail of FPS values
-    let { animationInterval } = this.state.config
+    let { animationInterval } = this.state
     let sinceStart = (animationInterval / 1000 * 100) / 100 | 0
     let currentFps = (Math.round(1000 / (animationInterval / ++this.frameCount) * 100) / 100).toFixed(2)
 
     return (
-      <SceneContext.Provider value={this.state.config}>
-        <Scene
-          {...this.props}
-          isFetching={this.state.isFetching}
-          sinceStart={sinceStart}
-          currentFps={currentFps}
-          onKeyDown={this.onKeyDown}
-        />
-      </SceneContext.Provider>
+      <Scene
+        {...this.props}
+        sceneRef={el => this.sceneRef = el}
+        isFetching={this.state.isFetching}
+        sinceStart={sinceStart}
+        currentFps={currentFps}
+        onKeyDown={this.onKeyDown}
+      />
     )
   }
 }
 
-export { SceneContext }
-
 export default connect(
   ({ scene }) => ({ scene }),
-  { fetchGameSettings, setSceneSize, setCurrentKey, pauseGame }
+  {
+    fetchGameSettings,
+    setSceneSize,
+    setCurrentKey,
+    setGameSettings,
+    pauseGame,
+    moveOnDirection
+  }
 )(SceneContainer)

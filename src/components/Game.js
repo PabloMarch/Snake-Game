@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react'
 import { hot } from 'react-hot-loader'
+import React, { Component, Fragment } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 // Components

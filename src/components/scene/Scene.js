@@ -10,8 +10,11 @@ import styles from './styles'
 
 // Presentational
 const Scene = (props) => (
-  <div className={props.classes.root} tabIndex="0" onKeyDown={props.onKeyDown}>
-    {props.isFetching ? <CircularProgress className={props.classes.loader} /> : props.children}
+  <div ref={props.sceneRef} className={props.classes.root} tabIndex="0" onKeyDown={props.onKeyDown}>
+    {props.isFetching
+      ? <CircularProgress className={props.classes.loader} />
+      : props.children
+    }
 
     <footer className={props.classes.detail}>
       {`Elapsed time: ${props.sinceStart} secs @ ${props.currentFps} fps.`}

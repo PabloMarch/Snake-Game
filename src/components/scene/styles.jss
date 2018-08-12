@@ -5,12 +5,10 @@ export default theme => ({
     position: 'relative',
   },
   loader: {
-    margin: 'auto',
+    margin: '-20px 0 0 -20px',
     position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    top: '50%',
+    left: '50%',
   },
   detail: {
     fontSize: 12,
