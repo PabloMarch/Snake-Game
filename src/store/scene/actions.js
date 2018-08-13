@@ -12,6 +12,7 @@ export const setCurrentKey = createAction('SET_CURRENT_KEY')
 export const setGameSettings = createAction('SET_GAME_SETTINGS')
 export const pauseGame = createAction('PAUSE_GAME')
 export const moveOnDirection = createAction('MOVE_ON_DIRECTION')
+export const resetGame = createAction('RESET_GAME')
 
 // Fetch vehicles
 export const fetchGameSettings = () => async dispatch => {

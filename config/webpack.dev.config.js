@@ -33,8 +33,10 @@ const config = {
       contentBase: PATHS.outputPath,
       compress: false,
       historyApiFallback: true,
-      hot: true,
-      port: 8080
+      port: 8080,
+      watchOptions: {
+          ignored: /node_modules/
+      }
     }
 };
 

@@ -19,6 +19,7 @@ const actions = combineActions(
 
 const initialState = {
   isGamePaused: false,
+  round: 1,
   refX: 0,
   refY: 0
 }

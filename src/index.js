@@ -7,14 +7,13 @@ import { create } from 'jss'
 import jssCompose from 'jss-compose'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { createGenerateClassName, jssPreset } from '@material-ui/core/styles'
-
-// Components
-import Game from 'components/Game';
-
-// Create Store
 import configureStore from './store/configureStore'
 
-const store = configureStore();
+// Components
+import Game from 'components/Game'
+
+// Create Store
+const store = configureStore()
 
 // JSS configuration.
 const generateClassName = createGenerateClassName()
@@ -32,4 +31,4 @@ render(
     </JssProvider>
   </Provider>,
   document.getElementById('app')
-);
+)

@@ -25,7 +25,11 @@ const Scene = (props) => (
 // Props
 Scene.propTypes = {
   classes: PropTypes.object.isRequired,
-  onKeyDown: PropTypes.func.isRequired,
+  sceneRef: PropTypes.func,
+  isFetching: PropTypes.bool,
+  sinceStart: PropTypes.number,
+  currentFps: PropTypes.number,
+  onKeyDown: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(Scene)

@@ -7,6 +7,7 @@ import {
   setSceneSize,
   setCurrentKey,
   setGameSettings,
+  resetGame,
   pauseGame,
   moveOnDirection
 } from 'store/scene/actions'
@@ -19,11 +20,11 @@ class SceneContainer extends Component {
   constructor (props) {
     super(props)
 
-    this.frameCount = 0
+    this.frameCount = 1
 
     this.state = {
       isFetching: true,
-      animationInterval: 0
+      animationInterval: 1
     }
   }
 
@@ -33,15 +34,15 @@ class SceneContainer extends Component {
       .then(() => {
         const { initialCharLenght, blockSize } = this.props.scene
 
-        // hide loader & focus scene
-        this.setState({ isFetching: false })
-        this.sceneRef.focus()
-
         // set initial position for next movement
-        this.props.moveOnDirection({ refX: blockSize * initialCharLenght })
+        this.props.moveOnDirection({ refX: blockSize*(initialCharLenght-1) })
 
         // start animation
         this.startLoop()
+
+        // hide loader & focus scene
+        this.setState({ isFetching: false })
+        this.sceneRef.focus()
       })
 
     // set viewport size
@@ -91,6 +92,7 @@ class SceneContainer extends Component {
     if (elapsed > this.fpsInterval) {
       this.lastRender = currTime - (elapsed % this.fpsInterval)
       this.setState({ animationInterval })
+      this.onTouchLimits()
       this.onUpdateDirection()
     }
   }
@@ -116,14 +118,23 @@ class SceneContainer extends Component {
         this.props.moveOnDirection({ refY: refY+blockSize })
         break
     }
+  }
 
-    console.log()
+  onTouchLimits() {
+    const { refX, refY, blockSize, sceneWidth, sceneHeight, round } = this.props.scene
+    const fixedWidth = sceneWidth-blockSize
+    const fixedHeight = sceneHeight-blockSize
+
+    if(refX < 0 || refX > fixedWidth || refY < 0 || refY > fixedHeight) {
+      this.props.resetGame({ round: round+1 })
+      alert('YOU LOSE!!')
+    }
   }
 
   onViewportSizeUpdate = () => {
     this.props.setSceneSize({
-      sceneWidth: window.innerWidth,
-      sceneHeight: window.innerHeight
+      sceneWidth: this.sceneRef.offsetWidth,
+      sceneHeight: this.sceneRef.offsetHeight
     })
   }
 
@@ -168,8 +179,8 @@ class SceneContainer extends Component {
   render() {
     // Detail of FPS values
     let { animationInterval } = this.state
-    let sinceStart = (animationInterval / 1000 * 100) / 100 | 0
-    let currentFps = (Math.round(1000 / (animationInterval / ++this.frameCount) * 100) / 100).toFixed(2)
+    let sinceStart = animationInterval / 1000 | 0
+    let currentFps = parseFloat((1000 / (animationInterval / ++this.frameCount)).toFixed(2))
 
     return (
       <Scene
@@ -191,6 +202,7 @@ export default connect(
     setSceneSize,
     setCurrentKey,
     setGameSettings,
+    resetGame,
     pauseGame,
     moveOnDirection
   }

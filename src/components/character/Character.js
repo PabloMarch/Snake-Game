@@ -24,7 +24,8 @@ const Character = props => (
 // Props
 Character.propTypes = {
   classes: PropTypes.object.isRequired,
-  style: PropTypes.object.isRequired
+  style: PropTypes.object.isRequired,
+  body: PropTypes.array.isRequired
 }
 
 export default withStyles(styles)(Character)

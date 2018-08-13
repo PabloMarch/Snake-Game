@@ -13,7 +13,7 @@ export default theme => ({
       top: '-0.05em',
     },
 
-    '&:last-of-type': {
+    '&:first-of-type': {
       color: '#296',
 
       '&::before': {

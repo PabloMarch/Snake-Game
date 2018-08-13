@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { updateCharacter } from 'store/character/actions'
+import { setInitialValues, updateCharacter } from 'store/character/actions'
 
 // Presentational
 import Character from './Character'
@@ -23,10 +23,15 @@ class CharacterContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { refX, refY } = this.props.scene
+    const { round, refX, refY } = this.props.scene
+
+    if(prevProps.scene.round !== round) return
 
     if(prevProps.scene.refX !== refX || prevProps.scene.refY !== refY) {
-      this.updateCharacterPosition(refX, refY)
+      const { body } = this.props.character
+      const newBody = this.updateCharacterPosition(body, refX, refY)
+
+      this.props.updateCharacter({ body: newBody })
     }
   }
 
@@ -34,7 +39,7 @@ class CharacterContainer extends Component {
     const { blockSize, initialCharLenght } = this.props.scene
     const body = this.createBodyParts(blockSize, initialCharLenght)
 
-    this.props.updateCharacter({ body })
+    this.props.setInitialValues({ body })
 
     this.setState({
       width: blockSize,
@@ -43,22 +48,21 @@ class CharacterContainer extends Component {
     })
   }
 
-  createBodyParts(size, nodes) {
+  createBodyParts(blockSize, charLenght) {
     let body = []
-    for(let i = 0; i < nodes; i++) {
-      body[i] = { x: i*size, y: 0, rotation: 0 }
+    for (let i = charLenght-1; i >= 0; --i) {
+      body.push({ x: i*blockSize, y: 0, rotation: 0 })
     }
     return body
   }
 
-  updateCharacterPosition(refX, refY) {
-    const { body } = this.props.character
+  updateCharacterPosition(body, refX, refY) {
+    // removes last item of array, copy and add it to beginning of new one
+    const lastBlock = body.length - 1
+    const newBlock = Object.assign({}, body[lastBlock], {x:refX, y:refY})
+    const newBody = [ newBlock, ...body.slice(0, lastBlock) ]
 
-    // removes first item of array, copy and add it to end with new values
-    const item = Object.assign({}, body[0], {x:refX, y:refY})
-  	const newBody = [ ...body.slice(1, body.length), item ]
-
-    this.props.updateCharacter({ body: newBody })
+    return newBody
   }
 
   render() {
@@ -66,7 +70,6 @@ class CharacterContainer extends Component {
       <Character
         style={this.state}
         body={this.props.character.body}
-        onCharacterUpdate={this.onCharacterUpdate}
       />
     )
   }
@@ -74,5 +77,5 @@ class CharacterContainer extends Component {
 
 export default connect(
   ({ character, scene }) => ({ character, scene }),
-  { updateCharacter }
+  { setInitialValues, updateCharacter }
 )(CharacterContainer)
