@@ -1,20 +1,22 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { setInitialValues, updateCharacter } from 'store/character/actions'
+import { setCharacterBlocks, updateCharacterBlocks } from 'store/character/actions'
 
 // Presentational
 import Character from './Character'
 
-class CharacterContainer extends Component {
+// Container
+class CharacterContainer extends PureComponent {
   constructor(props) {
     super(props)
 
     this.state = {
       width: 0,
       height: 0,
-      fontSize: 1
+      fontSize: 1,
+      isCharIncreated: false
     }
   }
 
@@ -22,16 +24,24 @@ class CharacterContainer extends Component {
     this.initCharacter()
   }
 
-  componentDidUpdate(prevProps) {
-    const { round, refX, refY } = this.props.scene
+  componentDidUpdate(prevProps, prevState) {
+    const { score, round, refX, refY } = this.props.scene
 
+    // returns when died
     if(prevProps.scene.round !== round) return
 
+    // keep internal tracking of new items
+    if(prevProps.scene.score !== score) {
+      this.setState({ isCharIncreated: true })
+    }
+
+    // only updates when reference position changes
     if(prevProps.scene.refX !== refX || prevProps.scene.refY !== refY) {
       const { body } = this.props.character
-      const newBody = this.updateCharacterPosition(body, refX, refY)
+      const updatedBody = this.updateCharacterPosition(body, refX, refY, this.state.isCharIncreated)
 
-      this.props.updateCharacter({ body: newBody })
+      this.props.updateCharacterBlocks({ body: updatedBody })
+      this.setState({ isCharIncreated: false })
     }
   }
 
@@ -39,7 +49,7 @@ class CharacterContainer extends Component {
     const { blockSize, initialCharLenght } = this.props.scene
     const body = this.createBodyParts(blockSize, initialCharLenght)
 
-    this.props.setInitialValues({ body })
+    this.props.setCharacterBlocks({ body })
 
     this.setState({
       width: blockSize,
@@ -50,23 +60,21 @@ class CharacterContainer extends Component {
 
   createBodyParts(blockSize, charLenght) {
     let body = []
-    for (let i = charLenght-1; i >= 0; --i) {
-      body.push({ x: i*blockSize, y: 0, rotation: 0 })
+    for(let i = 0; i < charLenght; i++) {
+      body[i] = { x: i*blockSize, y: 0, rotation: 0 }
     }
     return body
   }
 
-  updateCharacterPosition(body, refX, refY) {
-    // removes last item of array, copy and add it to beginning of new one
-    const lastBlock = body.length - 1
-    const newBlock = Object.assign({}, body[lastBlock], {x:refX, y:refY})
-    const newBody = [ newBlock, ...body.slice(0, lastBlock) ]
+  updateCharacterPosition(body, refX, refY, isNewItem) {
+    const item = Object.assign({}, body[0], { x:refX, y:refY })
+  	const updatedBody = isNewItem ? body : body.slice(1, body.length)
 
-    return newBody
+    return [ ...updatedBody, item ]
   }
 
   render() {
-    return(
+    return (
       <Character
         style={this.state}
         body={this.props.character.body}
@@ -77,5 +85,5 @@ class CharacterContainer extends Component {
 
 export default connect(
   ({ character, scene }) => ({ character, scene }),
-  { setInitialValues, updateCharacter }
+  { setCharacterBlocks, updateCharacterBlocks }
 )(CharacterContainer)

@@ -4,17 +4,19 @@ import { combineReducers } from 'redux'
 
 import scene from './scene'
 import character from './character'
+import item from './items'
 
 // Save a restarting point to reset game
-let initialGameState = undefined
+let initialGameState
 
 const initialGameReducer = combineReducers({
   scene,
-  character
+  character,
+  item
 })
 
 export default (state, action) => {
-  if(action.type === 'SET_INITIAL_VALUES') {
+  if(action.type === 'SET_CHARACTER_BLOCKS') {
     initialGameState = Object.assign({}, state, { character: action.payload })
   }
   else if(action.type === 'RESET_GAME') {

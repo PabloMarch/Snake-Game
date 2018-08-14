@@ -1,19 +1,21 @@
 export default theme => ({
-  body: {
-    color: '#094',
+  charBody: {
+    display: 'inline',
+  },
+  charBlock: {
+    color: '#294',
     display: 'block',
-    overflow: 'visible',
     position: 'absolute',
 
     '&::before': {
       content: '"brightness_1"',
       fontSize: '1.1em',
-      position: 'relative',
       left: '-0.05em',
+      position: 'relative',
       top: '-0.05em',
     },
 
-    '&:first-of-type': {
+    '&:last-of-type': {
       color: '#296',
 
       '&::before': {

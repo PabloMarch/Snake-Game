@@ -1,10 +1,14 @@
 export default theme => ({
   root: {
-    color: '#900',
-    height: '20px',
-    left: '70%',
+    color: '#B00',
     position: 'absolute',
-    top: '20%',
-    width: '20px',
+
+    '&::before': {
+      content: '"bug_report"',
+      fontSize: '1.4em',
+      left: '-0.15em',
+      position: 'relative',
+      top: '-0.15em',
+    }
   },
 })

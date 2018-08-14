@@ -1,9 +1,9 @@
 import { handleActions, combineActions } from 'redux-actions'
 
 // Actions
-import { setInitialValues, updateCharacter, addBodyItem } from './actions'
+import { setCharacterBlocks, updateCharacterBlocks, addBodyItem } from './actions'
 
-const actions = combineActions(setInitialValues, updateCharacter, addBodyItem)
+const actions = combineActions(setCharacterBlocks, updateCharacterBlocks, addBodyItem)
 
 const initialState = { body: [] }
 

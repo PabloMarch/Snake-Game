@@ -6,7 +6,8 @@ import {
   setCurrentKey,
   setGameSettings,
   pauseGame,
-  moveOnDirection
+  updateRefPosition,
+  incrementScore
 } from './actions'
 
 const actions = combineActions(
@@ -14,11 +15,13 @@ const actions = combineActions(
   setCurrentKey,
   setGameSettings,
   pauseGame,
-  moveOnDirection
+  updateRefPosition,
+  incrementScore
 )
 
 const initialState = {
   isGamePaused: false,
+  score: 0,
   round: 1,
   refX: 0,
   refY: 0

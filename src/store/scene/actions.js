@@ -7,12 +7,13 @@ import gameSetup from 'src/data/gameSetup'
 const delay = ms => new Promise(resolve => setTimeout(() => resolve(gameSetup), ms));
 
 // Actions
+export const resetGame = createAction('RESET_GAME')
 export const setSceneSize = createAction('SET_SCENE_SIZE')
 export const setCurrentKey = createAction('SET_CURRENT_KEY')
 export const setGameSettings = createAction('SET_GAME_SETTINGS')
 export const pauseGame = createAction('PAUSE_GAME')
-export const moveOnDirection = createAction('MOVE_ON_DIRECTION')
-export const resetGame = createAction('RESET_GAME')
+export const updateRefPosition = createAction('UPDATE_REF_POSITION')
+export const incrementScore = createAction('ADD_TO_SCORE')
 
 // Fetch vehicles
 export const fetchGameSettings = () => async dispatch => {

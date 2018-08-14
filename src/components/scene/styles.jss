@@ -5,15 +5,15 @@ export default theme => ({
     position: 'relative',
   },
   loader: {
+    left: '50%',
     margin: '-20px 0 0 -20px',
     position: 'absolute',
     top: '50%',
-    left: '50%',
   },
   detail: {
+    bottom: 10,
     fontSize: 12,
     position: 'absolute',
-    bottom: 10,
     right: 10,
   }
 })

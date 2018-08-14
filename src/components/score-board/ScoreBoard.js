@@ -22,7 +22,6 @@ const ScoreBoard = (props) => (
         Snake React Game
       </Typography>
       <Button href="https://github.com/pablomarch/snake-game" color="inherit">GitHub</Button>
-      <Button color="inherit">Start</Button>
     </Toolbar>
   </AppBar>
 )

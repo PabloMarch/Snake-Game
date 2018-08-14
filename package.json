@@ -28,7 +28,6 @@
     "es6-promise": "^4.2.4",
     "exports-loader": "^0.7.0",
     "jss": "^9.8.7",
-    "jss-compose": "^5.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",

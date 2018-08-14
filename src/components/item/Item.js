@@ -8,14 +8,17 @@ import styles from './styles'
 
 // Presentational
 const Item = props => (
-  <div className={props.classes.root}>
-    <Icon>bug_report</Icon>
-  </div>
+  <Icon
+    ref={props.itemRef}
+    className={props.classes.root}
+    style={Object.assign({}, props.style, { left: props.position.x, top: props.position.y })}
+  />
 )
 
 // Props
 Item.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  style: PropTypes.object.isRequired,
 }
 
 export default withStyles(styles)(Item)

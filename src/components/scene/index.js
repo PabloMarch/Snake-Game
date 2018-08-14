@@ -9,7 +9,8 @@ import {
   setGameSettings,
   resetGame,
   pauseGame,
-  moveOnDirection
+  updateRefPosition,
+  incrementScore
 } from 'store/scene/actions'
 
 // Presentational
@@ -34,19 +35,19 @@ class SceneContainer extends Component {
       .then(() => {
         const { initialCharLenght, blockSize } = this.props.scene
 
-        // set initial position for next movement
-        this.props.moveOnDirection({ refX: blockSize*(initialCharLenght-1) })
+        // set viewport size
+        this.onViewportSizeUpdate()
 
-        // start animation
+        // set initial position for next movement
+        this.props.updateRefPosition({ refX: blockSize*(initialCharLenght-1) })
+
+        // start key loop
         this.startLoop()
 
         // hide loader & focus scene
         this.setState({ isFetching: false })
         this.sceneRef.focus()
       })
-
-    // set viewport size
-    this.onViewportSizeUpdate()
 
     // recalculate viewport size
     window.addEventListener('resize', this.onViewportSizeUpdate)
@@ -97,25 +98,29 @@ class SceneContainer extends Component {
     }
   }
 
+  onIncrementScore = () => {
+    this.props.incrementScore({ score: this.props.scene.score+1 })
+  }
+
   onUpdateDirection() {
     const { currentKey, blockSize, refX, refY } = this.props.scene
 
     // Change direction
     switch(currentKey) {
       case 'ArrowLeft':
-        this.props.moveOnDirection({ refX: refX-blockSize })
+        this.props.updateRefPosition({ refX: refX-blockSize })
         break
 
       case 'ArrowRight':
-        this.props.moveOnDirection({ refX: refX+blockSize })
+        this.props.updateRefPosition({ refX: refX+blockSize })
         break
 
       case 'ArrowUp':
-        this.props.moveOnDirection({ refY: refY-blockSize })
+        this.props.updateRefPosition({ refY: refY-blockSize })
         break
 
       case 'ArrowDown':
-        this.props.moveOnDirection({ refY: refY+blockSize })
+        this.props.updateRefPosition({ refY: refY+blockSize })
         break
     }
   }
@@ -182,6 +187,10 @@ class SceneContainer extends Component {
     let sinceStart = animationInterval / 1000 | 0
     let currentFps = parseFloat((1000 / (animationInterval / ++this.frameCount)).toFixed(2))
 
+    const childrenWithProps = React.Children.map(this.props.children,
+      child => React.cloneElement(child, { incrementScore: this.onIncrementScore })
+    )
+
     return (
       <Scene
         {...this.props}
@@ -189,6 +198,7 @@ class SceneContainer extends Component {
         isFetching={this.state.isFetching}
         sinceStart={sinceStart}
         currentFps={currentFps}
+        childrenWithProps={childrenWithProps}
         onKeyDown={this.onKeyDown}
       />
     )
@@ -204,6 +214,7 @@ export default connect(
     setGameSettings,
     resetGame,
     pauseGame,
-    moveOnDirection
+    updateRefPosition,
+    incrementScore
   }
 )(SceneContainer)

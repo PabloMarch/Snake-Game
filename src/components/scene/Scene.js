@@ -13,11 +13,11 @@ const Scene = (props) => (
   <div ref={props.sceneRef} className={props.classes.root} tabIndex="0" onKeyDown={props.onKeyDown}>
     {props.isFetching
       ? <CircularProgress className={props.classes.loader} />
-      : props.children
+      : props.childrenWithProps
     }
 
     <footer className={props.classes.detail}>
-      {`Elapsed time: ${props.sinceStart} secs @ ${props.currentFps} fps.`}
+      {`Elapsed time: ${props.sinceStart} secs @ ${props.currentFps} fps`}
     </footer>
   </div>
 )

@@ -15,8 +15,8 @@ class Game extends Component {
         <CssBaseline />
         <ScoreBoard />
         <Scene>
-          <Character />
           <Item />
+          <Character />
         </Scene>
       </Fragment>
     )
