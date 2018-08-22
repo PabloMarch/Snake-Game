@@ -14,7 +14,7 @@ import Game from 'components/Game'
 // Create Store
 const store = configureStore()
 
-// JSS configuration.
+// JSS configuration
 const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
 

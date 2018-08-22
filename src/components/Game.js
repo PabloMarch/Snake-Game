@@ -15,8 +15,12 @@ class Game extends Component {
         <CssBaseline />
         <ScoreBoard />
         <Scene>
-          <Item />
-          <Character />
+          {handlers => (
+            <Fragment>
+              <Item incrementScore={handlers.incrementScore} />
+              <Character resetGame={handlers.resetGame} />
+            </Fragment>
+          )}
         </Scene>
       </Fragment>
     )

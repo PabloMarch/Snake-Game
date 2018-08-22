@@ -4,7 +4,5 @@ import { handleActions } from 'redux-actions'
 import { setRandomItem } from './actions'
 
 export default handleActions({
-  [ setRandomItem ] (state, { payload }) {
-    return { ...state, ...payload }
-  }
+  [ setRandomItem ]: (state, { payload }) => ({ ...state, ...payload })
 }, {})

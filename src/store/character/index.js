@@ -8,7 +8,5 @@ const actions = combineActions(setCharacterBlocks, updateCharacterBlocks, addBod
 const initialState = { body: [] }
 
 export default handleActions({
-  [ actions ] (state, { payload }) {
-    return { ...state, ...payload }
-  }
+  [ actions ]: (state, { payload }) => ({ ...state, ...payload })
 }, initialState)

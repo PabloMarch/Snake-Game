@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { setRandomItem } from 'store/items/actions'
+import * as actions from 'store/items/actions'
 
 // Presentational
 import Item from './Item'
@@ -27,18 +27,19 @@ class ItemContainer extends PureComponent {
     const { refX, refY, blockSize, sceneWidth, sceneHeight } = this.props.scene
     const { x, y } = this.props.item
 
-    // get reference of the middle square position
+    // get reference of middle square position
     const refCenterX = refX+blockSize/2
     const refCenterY = refY+blockSize/2
 
     // test if screen size change
     const isScreenSizeUpdated = prevProps.scene.sceneWidth !== sceneWidth || prevProps.scene.sceneHeight !== sceneHeight
-    // test if item is caugth
+
+    // test if item is caught
     const isXPositionCollided = refCenterX >= x && refCenterX <= x+blockSize
     const isYPositionCollided = refCenterY >= y && refCenterY <= y+blockSize
-    const hasPositionChange = prevProps.scene.refX !== refX || prevProps.scene.refY !== refY
+    const hasChangedPosition = prevProps.scene.refX !== refX || prevProps.scene.refY !== refY
 
-    if(hasPositionChange && isXPositionCollided && isYPositionCollided) {
+    if(hasChangedPosition && isXPositionCollided && isYPositionCollided) {
       this.props.incrementScore()
       this.setNewItem()
     }
@@ -78,5 +79,5 @@ class ItemContainer extends PureComponent {
 
 export default connect(
   ({ item, scene }) => ({ item, scene }),
-  { setRandomItem }
+  { ...actions }
 )(ItemContainer)

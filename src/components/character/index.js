@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { setCharacterBlocks, updateCharacterBlocks } from 'store/character/actions'
+import * as actions from 'store/character/actions'
 
 // Presentational
 import Character from './Character'
@@ -38,10 +38,18 @@ class CharacterContainer extends PureComponent {
     // only updates when reference position changes
     if(prevProps.scene.refX !== refX || prevProps.scene.refY !== refY) {
       const { body } = this.props.character
-      const updatedBody = this.updateCharacterPosition(body, refX, refY, this.state.isCharIncreated)
+      const isBodyCollided = this.checkCollisionOnBody(body, refX, refY)
 
-      this.props.updateCharacterBlocks({ body: updatedBody })
-      this.setState({ isCharIncreated: false })
+      // check if body touch itself
+      if(isBodyCollided) {
+        // starts game again
+        this.props.resetGame()
+      } else {
+        // update body
+        const updatedBody = this.updateCharacterPosition(body, refX, refY, this.state.isCharIncreated)
+        this.props.updateCharacterBlocks({ body: updatedBody })
+        this.setState({ isCharIncreated: false })
+      }
     }
   }
 
@@ -73,6 +81,13 @@ class CharacterContainer extends PureComponent {
     return [ ...updatedBody, item ]
   }
 
+  checkCollisionOnBody(body, refX, refY) {
+    for(var i = 0; i < body.length; i++) {
+      if(body[i].x === refX && body[i].y === refY) return true
+    }
+    return false
+  }
+
   render() {
     return (
       <Character
@@ -85,5 +100,5 @@ class CharacterContainer extends PureComponent {
 
 export default connect(
   ({ character, scene }) => ({ character, scene }),
-  { setCharacterBlocks, updateCharacterBlocks }
+  { ...actions }
 )(CharacterContainer)

@@ -2,16 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import {
-  fetchGameSettings,
-  setSceneSize,
-  setCurrentKey,
-  setGameSettings,
-  resetGame,
-  pauseGame,
-  updateRefPosition,
-  incrementScore
-} from 'store/scene/actions'
+import * as actions from 'store/scene/actions'
 
 // Presentational
 import Scene from './Scene'
@@ -41,7 +32,7 @@ class SceneContainer extends Component {
         // set initial position for next movement
         this.props.updateRefPosition({ refX: blockSize*(initialCharLenght-1) })
 
-        // start key loop
+        // start keyFrame loop
         this.startLoop()
 
         // hide loader & focus scene
@@ -65,7 +56,7 @@ class SceneContainer extends Component {
     // animationFrame settings
     this.lastRender = Date.now()
     this.startTime = this.lastRender
-    this.fpsInterval = 1000 / this.props.scene.fps // fps
+    this.fpsInterval = 1000 / this.props.scene.fps
 
     // create animationFrame
     if( !this.frameId ) {
@@ -98,6 +89,11 @@ class SceneContainer extends Component {
     }
   }
 
+  onRestartGame = () => {
+    this.props.resetGame({ round: this.props.scene.round+1 })
+    alert('YOU LOSE!!')
+  }
+
   onIncrementScore = () => {
     this.props.incrementScore({ score: this.props.scene.score+1 })
   }
@@ -126,13 +122,12 @@ class SceneContainer extends Component {
   }
 
   onTouchLimits() {
-    const { refX, refY, blockSize, sceneWidth, sceneHeight, round } = this.props.scene
-    const fixedWidth = sceneWidth-blockSize
-    const fixedHeight = sceneHeight-blockSize
+    const { scene } = this.props
+    const fixedWidth = scene.sceneWidth-scene.blockSize
+    const fixedHeight = scene.sceneHeight-scene.blockSize
 
-    if(refX < 0 || refX > fixedWidth || refY < 0 || refY > fixedHeight) {
-      this.props.resetGame({ round: round+1 })
-      alert('YOU LOSE!!')
+    if(scene.refX < 0 || scene.refX > fixedWidth || scene.refY < 0 || scene.refY > fixedHeight) {
+      this.onRestartGame()
     }
   }
 
@@ -187,10 +182,6 @@ class SceneContainer extends Component {
     let sinceStart = animationInterval / 1000 | 0
     let currentFps = parseFloat((1000 / (animationInterval / ++this.frameCount)).toFixed(2))
 
-    const childrenWithProps = React.Children.map(this.props.children,
-      child => React.cloneElement(child, { incrementScore: this.onIncrementScore })
-    )
-
     return (
       <Scene
         {...this.props}
@@ -198,8 +189,11 @@ class SceneContainer extends Component {
         isFetching={this.state.isFetching}
         sinceStart={sinceStart}
         currentFps={currentFps}
-        childrenWithProps={childrenWithProps}
-        onKeyDown={this.onKeyDown}
+        handlers={{
+          keyDown: this.onKeyDown,
+          incrementScore: this.onIncrementScore,
+          resetGame: this.onRestartGame
+        }}
       />
     )
   }
@@ -207,14 +201,5 @@ class SceneContainer extends Component {
 
 export default connect(
   ({ scene }) => ({ scene }),
-  {
-    fetchGameSettings,
-    setSceneSize,
-    setCurrentKey,
-    setGameSettings,
-    resetGame,
-    pauseGame,
-    updateRefPosition,
-    incrementScore
-  }
+  { ...actions }
 )(SceneContainer)

@@ -10,10 +10,11 @@ import styles from './styles'
 
 // Presentational
 const Scene = (props) => (
-  <div ref={props.sceneRef} className={props.classes.root} tabIndex="0" onKeyDown={props.onKeyDown}>
-    {props.isFetching
+  <div ref={props.sceneRef} className={props.classes.root} tabIndex="0" onKeyDown={props.handlers.keyDown}>
+    {
+      props.isFetching
       ? <CircularProgress className={props.classes.loader} />
-      : props.childrenWithProps
+      : props.children(props.handlers)
     }
 
     <footer className={props.classes.detail}>
@@ -29,7 +30,7 @@ Scene.propTypes = {
   isFetching: PropTypes.bool,
   sinceStart: PropTypes.number,
   currentFps: PropTypes.number,
-  onKeyDown: PropTypes.func.isRequired
+  handlers: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(Scene)

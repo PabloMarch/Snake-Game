@@ -13,12 +13,12 @@ export const setCurrentKey = createAction('SET_CURRENT_KEY')
 export const setGameSettings = createAction('SET_GAME_SETTINGS')
 export const pauseGame = createAction('PAUSE_GAME')
 export const updateRefPosition = createAction('UPDATE_REF_POSITION')
-export const incrementScore = createAction('ADD_TO_SCORE')
+export const incrementScore = createAction('INCREMENT_SCORE')
 
 // Fetch vehicles
 export const fetchGameSettings = () => async dispatch => {
   try {
-    const response = await delay(0) // dispatch(Api.get('api/gameSettings')) // <= Simulate fetch
+    const response = await delay(1000) // dispatch(Api.get('api/gameSettings')) // <= Simulate fetch
     dispatch(setGameSettings(response.gameSpec))
   } catch (err) {
     dispatch(setGameSettings(err))
