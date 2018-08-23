@@ -1,11 +1,43 @@
 {
+  "orientation": "landscape",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "icon_48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_168x168.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "snake game in reactjs/redux",
   "short_name": "snake-game",
-  "name": "Snake Game in React/Redux",
   "manifest_version": 1,
   "version": "1.0.0",
-  "start_url": "/",
-  "display": "fullscreen",
-  "orientation": "landscape",
+  "start_url": ".",
   "background_color": "#000000",
   "theme_color": "#3f51b5",
   "applications": {
@@ -15,14 +47,5 @@
     "edge": {
       "browser_action_next_to_addressbar": true
     }
-  },
-  "vendor.js": "vendor.566e083ead6225e53397.js",
-  "app.css": "app.b53a3bcf2365d130af10.css",
-  "app.js": "app.b53a3bcf2365d130af10.js",
-  "runtime~vendor.js": "runtime~vendor.bundle.js",
-  "runtime~app.js": "runtime~app.bundle.js",
-  "favicon.ico": "favicon.ico",
-  "index.html": "index.html",
-  "precache-manifest.49031b88eaf34af435cc64d34f7eeeea.js": "precache-manifest.49031b88eaf34af435cc64d34f7eeeea.js",
-  "service-worker.js": "service-worker.js"
+  }
 }
