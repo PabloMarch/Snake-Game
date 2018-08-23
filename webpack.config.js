@@ -1,6 +1,7 @@
 const merge = require('webpack-merge');
-const commonConfig = require('./config/webpack.common.config');
 
-const envConfig = require(`./config/webpack.${process.env.NODE_ENV}.config`);
-
-module.exports = merge(commonConfig, envConfig);
+// import and merge common config with the correct enviroment
+module.exports = (env, argv) => merge(
+  require('./config/webpack.common.config')(argv.mode),
+  require(`./config/webpack.${argv.mode}.config`)
+);

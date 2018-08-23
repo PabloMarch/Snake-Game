@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebPackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const PATHS = require('./webpack.paths');
@@ -20,6 +20,7 @@ const config = {
   },
   recordsPath: PATHS.recordsPath,
   optimization: {
+    runtimeChunk: true,
     minimizer: [
       new OptimizeCSSAssetsPlugin(),
       new UglifyJsPlugin({
@@ -40,7 +41,7 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('prod')
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new CleanWebPackPlugin(PATHS.outputPath, {
       root: process.cwd(),
@@ -48,8 +49,8 @@ const config = {
       dry: false
     }),
     new MiniCssExtractPlugin({
-      filename: 'app.bundle.css'
-    }),
+      filename: '[name].[chunkhash].css'
+    })
   ]
 };
 

@@ -1,12 +1,32 @@
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PATHS = require('./webpack.paths');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const pkg = require('../package.json');
+const PATHS = require('./webpack.paths');
 
-const devMode = process.env.NODE_ENV !== 'prod';
+const MANIFEST = {
+  'short_name':       pkg.name,
+  'name':             pkg.description,
+  'manifest_version': 1.0,
+  'version':          pkg.version,
+  'start_url':        '/',
+  'display':          'fullscreen',
+  'orientation':      'landscape',
+  'background_color': '#000000',
+  'theme_color':      '#3f51b5',
+  'applications': {
+    'gecko': {
+      'id': 'clients@orbitdevs.com'
+    },
+    'edge': {
+      'browser_action_next_to_addressbar': true
+    }
+  }
+}
 
-const config = {
+const commonConfig = env => ({
   entry: {
     vendor: Object.keys(pkg.dependencies),
     app: './src/index.js'
@@ -41,7 +61,7 @@ const config = {
         exclude: /node_modules/,
         include: PATHS.app,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          env != 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
@@ -62,17 +82,35 @@ const config = {
     ]
   },
   plugins: [
+    // hook into the compiler to extract progress information
     new webpack.ProgressPlugin(),
+    // export promises and fetch to use internally
     new webpack.ProvidePlugin({
       'Promise': 'exports-loader?global.Promise!es6-promise',
       'fetch': 'exports-loader?self.fetch!whatwg-fetch'
     }),
+    // extract html from template
     new HtmlWebPackPlugin({
       template: PATHS.template,
       favicon: PATHS.favicon,
       inject: true
+    }),
+    // add manifest.json file
+    new ManifestPlugin({
+      writeToFileEmit: true,
+      seed: MANIFEST
+    }),
+    // activate service worker
+    new GenerateSW({
+      swDest: 'service-worker.js',
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [{
+        urlPattern: new RegExp(pkg.homepage),
+        handler: 'staleWhileRevalidate'
+      }]
     })
   ]
-};
+});
 
-module.exports = config;
+module.exports = commonConfig;

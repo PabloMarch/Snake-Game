@@ -16,6 +16,7 @@
 6. **You're good to code now**.
 
 **Notes**
-If you are using Powershell, you can type the following command to effectively add to your path :
+- Using Powershell, you may need to add to your PATH env var:
 `[Environment]::SetEnvironmentVariable("Path", "$env:Path;c:\Users\[UserName]\AppData\Roaming\npm\", "User")`
 or try install webpack globally running `npm install -g webpack`
+- You are welcome to collaborate and make this game awesome...

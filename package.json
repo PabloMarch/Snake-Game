@@ -4,8 +4,8 @@
   "description": "Snake Game in React/Redux",
   "main": "index.ejs",
   "scripts": {
-    "build": "cross-env NODE_ENV=prod webpack --mode production",
-    "start": "cross-env NODE_ENV=dev webpack-dev-server --hot --mode development",
+    "build": "webpack --mode=production",
+    "start": "webpack-dev-server --mode=development --hot",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -24,7 +24,7 @@
   "author": "Pablo Marchena",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/core": "^1.5.0",
+    "@material-ui/core": "^1.5.1",
     "es6-promise": "^4.2.4",
     "exports-loader": "^0.7.0",
     "jss": "^9.8.7",
@@ -47,23 +47,23 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
-    "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
-    "eslint": "^5.1.0",
+    "eslint": "^5.4.0",
     "eslint-loader": "^2.1.0",
     "gh-pages": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.1",
+    "mini-css-extract-plugin": "^0.4.2",
     "node-sass": "^4.9.3",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "react-hot-loader": "^4.3.4",
     "react-jss-hmr": "^0.1.3",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.22.1",
-    "url-loader": "^1.0.1",
-    "webpack": "^4.16.1",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.4",
-    "webpack-merge": "^4.1.3"
+    "webpack-merge": "^4.1.3",
+    "workbox-webpack-plugin": "^3.4.1"
   }
 }
