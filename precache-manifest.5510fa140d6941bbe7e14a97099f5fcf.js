@@ -3,10 +3,6 @@ self.__precacheManifest = [
     "url": "vendor.566e083ead6225e53397.js"
   },
   {
-    "revision": "7a8229167cc6acc1b0788927ce27aaeb",
-    "url": "service-worker.js"
-  },
-  {
     "revision": "0e735631be92bb8b43f7",
     "url": "runtime~vendor.bundle.js"
   },
@@ -15,10 +11,7 @@ self.__precacheManifest = [
     "url": "runtime~app.bundle.js"
   },
   {
-    "url": "precache-manifest.2dcca016fbdef155cdf9eba24c884966.js"
-  },
-  {
-    "revision": "3784eca1b1f3f845cc987b663b9349e0",
+    "revision": "a556332de2ba3279093f0fcce0041b86",
     "url": "index.html"
   },
   {
@@ -26,9 +19,9 @@ self.__precacheManifest = [
     "url": "favicon.ico"
   },
   {
-    "url": "app.bd99c72c251a61f517a2.js"
+    "url": "app.fd940caff9dde6d3f396.js"
   },
   {
-    "url": "app.bd99c72c251a61f517a2.css"
+    "url": "app.fd940caff9dde6d3f396.css"
   }
 ];
