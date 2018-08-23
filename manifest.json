@@ -1,0 +1,28 @@
+{
+  "short_name": "snake-game",
+  "name": "Snake Game in React/Redux",
+  "manifest_version": 1,
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#3f51b5",
+  "applications": {
+    "gecko": {
+      "id": "clients@orbitdevs.com"
+    },
+    "edge": {
+      "browser_action_next_to_addressbar": true
+    }
+  },
+  "vendor.js": "vendor.566e083ead6225e53397.js",
+  "app.css": "app.b53a3bcf2365d130af10.css",
+  "app.js": "app.b53a3bcf2365d130af10.js",
+  "runtime~vendor.js": "runtime~vendor.bundle.js",
+  "runtime~app.js": "runtime~app.bundle.js",
+  "favicon.ico": "favicon.ico",
+  "index.html": "index.html",
+  "precache-manifest.49031b88eaf34af435cc64d34f7eeeea.js": "precache-manifest.49031b88eaf34af435cc64d34f7eeeea.js",
+  "service-worker.js": "service-worker.js"
+}
