@@ -3,10 +3,11 @@ import React, { Component, Fragment } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 // Components
-import Scene from './scene'
 import ScoreBoard from './score-board'
+import Scene from './scene'
 import Character from './character'
 import Item from './item'
+import Controls from './controls'
 
 class Game extends Component {
   render() {
@@ -19,6 +20,7 @@ class Game extends Component {
             <Fragment>
               <Item incrementScore={handlers.incrementScore} />
               <Character resetGame={handlers.resetGame} />
+              <Controls keyDown={handlers.keyDown} />
             </Fragment>
           )}
         </Scene>

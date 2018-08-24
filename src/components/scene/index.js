@@ -138,13 +138,13 @@ class SceneContainer extends Component {
     })
   }
 
-  onKeyDown = e => {
+  onKeyDown = keyCode => {
     const { currentKey, isGamePaused } = this.props.scene
     let pressedKey = currentKey
 
     // only allows those keys on game
-    if(/(13|32|37|38|39|40)$/.test(e.keyCode)) {
-      switch (e.keyCode) {
+    if(/(13|32|37|38|39|40)$/.test(keyCode)) {
+      switch (keyCode) {
         case 13: // enter
           console.log('Show Menu...')
           break
@@ -170,7 +170,7 @@ class SceneContainer extends Component {
           break
       }
 
-      if(pressedKey && currentKey !== e.key) {
+      if(pressedKey && pressedKey !== currentKey) {
         this.props.setCurrentKey({ currentKey: pressedKey })
       }
     }

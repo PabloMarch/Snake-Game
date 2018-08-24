@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Actions
@@ -9,6 +10,10 @@ import Character from './Character'
 
 // Container
 class CharacterContainer extends PureComponent {
+  static propTypes = {
+    resetGame: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props)
 

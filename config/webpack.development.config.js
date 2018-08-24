@@ -36,7 +36,8 @@ const config = {
       contentBase: PATHS.outputPath,
       compress: false,
       historyApiFallback: true,
-      port: 8080,
+      disableHostCheck: true,
+      host: '0.0.0.0',
       watchOptions: {
         ignored: /node_modules/
       }

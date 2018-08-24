@@ -10,7 +10,12 @@ import styles from './styles'
 
 // Presentational
 const Scene = (props) => (
-  <div ref={props.sceneRef} className={props.classes.root} tabIndex="0" onKeyDown={props.handlers.keyDown}>
+  <div
+    tabIndex="0"
+    ref={props.sceneRef}
+    className={props.classes.root}
+    onKeyDown={e => props.handlers.keyDown(e.keyCode)}
+  >
     {
       props.isFetching
       ? <CircularProgress className={props.classes.loader} />

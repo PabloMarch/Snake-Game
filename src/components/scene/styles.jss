@@ -14,6 +14,6 @@ export default theme => ({
     bottom: 10,
     fontSize: 12,
     position: 'absolute',
-    right: 10,
+    left: 10,
   }
 })
