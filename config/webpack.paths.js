@@ -7,6 +7,7 @@ module.exports = {
   store: path.resolve(__dirname, "../src/store"),
   outputPath: path.resolve(__dirname, '../build'),
   recordsPath: path.join(__dirname, '../records.json'),
+  icon: './src/assets/icon.png',
   template: './src/index.ejs',
   favicon: './src/favicon.ico'
 };

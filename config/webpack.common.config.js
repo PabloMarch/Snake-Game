@@ -1,21 +1,25 @@
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const PwaManifestWebpackPlugin = require('pwa-manifest-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const pkg = require('../package.json');
 const PATHS = require('./webpack.paths');
 
 const MANIFEST = {
-  'short_name':       pkg.name,
   'name':             pkg.description,
+  'short_name':       pkg.name,
   'manifest_version': 1.0,
   'version':          pkg.version,
-  'start_url':        '/',
+  'start_url':        '.',
   'display':          'fullscreen',
   'orientation':      'landscape',
   'background_color': '#000000',
   'theme_color':      '#3f51b5',
+  'icon': {
+    'src': PATHS.icon,
+    'sizes': [48, 72, 96, 144, 168, 192]
+  },
   'applications': {
     'gecko': {
       'id': 'clients@orbitdevs.com'
@@ -96,10 +100,7 @@ const commonConfig = env => ({
       inject: true
     }),
     // add manifest.json file
-    new ManifestPlugin({
-      writeToFileEmit: true,
-      seed: MANIFEST
-    }),
+    new PwaManifestWebpackPlugin(MANIFEST),
     // activate service worker
     new GenerateSW({
       swDest: 'service-worker.js',

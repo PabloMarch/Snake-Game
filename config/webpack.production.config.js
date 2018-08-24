@@ -20,7 +20,7 @@ const config = {
   },
   recordsPath: PATHS.recordsPath,
   optimization: {
-    runtimeChunk: true,
+    runtimeChunk: 'single',
     minimizer: [
       new OptimizeCSSAssetsPlugin(),
       new UglifyJsPlugin({
