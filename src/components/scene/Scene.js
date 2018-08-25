@@ -16,11 +16,13 @@ const Scene = (props) => (
     className={props.classes.root}
     onKeyDown={e => props.handlers.keyDown(e.keyCode)}
   >
-    {
-      props.isFetching
-      ? <CircularProgress className={props.classes.loader} />
-      : props.children(props.handlers)
-    }
+    <section className={props.classes.limits} style={{ height: props.height, width: props.width }}>
+      {
+        props.isFetching
+        ? <CircularProgress className={props.classes.loader} />
+        : props.children(props.handlers)
+      }
+    </section>
 
     <footer className={props.classes.detail}>
       {`Elapsed time: ${props.sinceStart} secs @ ${props.currentFps} fps`}

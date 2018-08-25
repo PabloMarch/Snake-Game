@@ -25,40 +25,34 @@ class ItemContainer extends PureComponent {
   }
 
   componentDidMount() {
-    this.setNewItem()
+    this.createItem()
   }
 
   componentDidUpdate(prevProps) {
-    const { refX, refY, blockSize, sceneWidth, sceneHeight } = this.props.scene
-    const { x, y } = this.props.item
-
-    // get reference of middle square position
-    const refCenterX = refX+blockSize/2
-    const refCenterY = refY+blockSize/2
-
-    // test if screen size change
-    const isScreenSizeUpdated = prevProps.scene.sceneWidth !== sceneWidth || prevProps.scene.sceneHeight !== sceneHeight
+    const { scene } = this.props
 
     // test if item is caught
-    const isXPositionCollided = refCenterX >= x && refCenterX <= x+blockSize
-    const isYPositionCollided = refCenterY >= y && refCenterY <= y+blockSize
-    const hasChangedPosition = prevProps.scene.refX !== refX || prevProps.scene.refY !== refY
+    const isItemCollided = scene.refX === this.props.item.x && scene.refY === this.props.item.y
+    // check for updates on item position
+    const hasChangedPosition = prevProps.scene.refX !== scene.refX || prevProps.scene.refY !== scene.refY
+    // check for change on viewport
+    const isScreenSizeUpdated = prevProps.scene.sceneWidth !== scene.sceneWidth || prevProps.scene.sceneHeight !== scene.sceneHeight
 
-    if(hasChangedPosition && isXPositionCollided && isYPositionCollided) {
+    if(isItemCollided && hasChangedPosition) {
       this.props.incrementScore()
-      this.setNewItem()
+      this.createItem()
     }
     else if(isScreenSizeUpdated) {
-      this.setNewItem()
+      this.createItem()
     }
   }
 
-  setNewItem() {
+  createItem() {
     const { blockSize, sceneWidth, sceneHeight } = this.props.scene
 
     this.props.setRandomItem({
-      x: this.generateRandomNum(blockSize, sceneWidth),
-      y: this.generateRandomNum(blockSize, sceneHeight),
+      x: this.setItemPosition( this.generateRandomNum(1, sceneWidth), blockSize),
+      y: this.setItemPosition( this.generateRandomNum(1, sceneHeight), blockSize),
     })
 
     this.setState({
@@ -68,8 +62,12 @@ class ItemContainer extends PureComponent {
     })
   }
 
+  setItemPosition(position, blockSize) {
+    return position - position % blockSize
+  }
+
   generateRandomNum(min, max) {
-    return Math.floor((Math.random() * max-min*3+1) + min*3)
+    return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
   render() {

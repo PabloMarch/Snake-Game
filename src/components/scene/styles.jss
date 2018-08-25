@@ -3,6 +3,17 @@ export default theme => ({
     flex: '1 1 auto',
     outline: 'none',
     position: 'relative',
+    '&::-webkit-scrollbar': { display:'none' }
+  },
+  limits: {
+    backgroundColor: '#000',
+    bottom: 0,
+    left: 0,
+    margin: 'auto',
+    position: 'absolute',
+    overflow: 'hidden',
+    right: 0,
+    top: 0,
   },
   loader: {
     left: '50%',

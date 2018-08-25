@@ -1,7 +1,4 @@
 export default theme => ({
-  root: {
-    marginBottom: '1em',
-  },
   flex: {
     flexGrow: 1,
   },

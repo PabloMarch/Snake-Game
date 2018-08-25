@@ -16,7 +16,9 @@ class SceneContainer extends Component {
 
     this.state = {
       isFetching: true,
-      animationInterval: 1
+      animationInterval: 1,
+      innerWidth: 0,
+      innerHeigth: 0
     }
   }
 
@@ -84,7 +86,6 @@ class SceneContainer extends Component {
     if (elapsed > this.fpsInterval) {
       this.lastRender = currTime - (elapsed % this.fpsInterval)
       this.setState({ animationInterval })
-      this.onTouchLimits()
       this.onUpdateDirection()
     }
   }
@@ -121,20 +122,22 @@ class SceneContainer extends Component {
     }
   }
 
-  onTouchLimits() {
-    const { scene } = this.props
-    const fixedWidth = scene.sceneWidth-scene.blockSize
-    const fixedHeight = scene.sceneHeight-scene.blockSize
-
-    if(scene.refX < 0 || scene.refX > fixedWidth || scene.refY < 0 || scene.refY > fixedHeight) {
-      this.onRestartGame()
-    }
-  }
-
   onViewportSizeUpdate = () => {
+    const { blockSize } = this.props.scene
+    const { offsetWidth, offsetHeight } = this.sceneRef
+    const innerWidth = offsetWidth - offsetWidth%blockSize || blockSize
+    const innerHeigth = offsetHeight - offsetHeight%blockSize || blockSize
+
+    // set scene container
+    this.setState({
+      innerWidth: innerWidth,
+      innerHeigth: innerHeigth
+    })
+
+    // fix scene size to never overlays screen dimensions
     this.props.setSceneSize({
-      sceneWidth: this.sceneRef.offsetWidth,
-      sceneHeight: this.sceneRef.offsetHeight
+      sceneWidth: innerWidth - blockSize,
+      sceneHeight: innerHeigth - blockSize
     })
   }
 
@@ -189,6 +192,8 @@ class SceneContainer extends Component {
         isFetching={this.state.isFetching}
         sinceStart={sinceStart}
         currentFps={currentFps}
+        width={this.state.innerWidth}
+        height={this.state.innerHeigth}
         handlers={{
           keyDown: this.onKeyDown,
           incrementScore: this.onIncrementScore,
