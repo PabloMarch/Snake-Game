@@ -3,10 +3,15 @@ const CleanWebPackPlugin = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const PATHS = require('./webpack.paths');
 
 const config = {
   mode: 'production',
+  output: {
+    path: PATHS.outputPath,
+    filename: '[name].[contenthash:8].js'
+  },
   stats: {
     colors: true,
     hash: true,
@@ -20,7 +25,19 @@ const config = {
   },
   recordsPath: PATHS.recordsPath,
   optimization: {
+    nodeEnv: 'production',
     runtimeChunk: 'single',
+    concatenateModules: true,
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+           test: /[\\/]node_modules[\\/]/,
+           name: 'vendor',
+           chunks: 'all',
+           enforce: true
+         }
+      }
+    },
     minimizer: [
       new OptimizeCSSAssetsPlugin(),
       new UglifyJsPlugin({
@@ -40,17 +57,17 @@ const config = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    new CleanWebPackPlugin(PATHS.outputPath, {
-      root: process.cwd(),
-      verbose: true,
-      dry: false
+    new BundleAnalyzerPlugin(),
+    new CleanWebPackPlugin(
+      PATHS.outputPath, {
+        root: process.cwd(),
+        verbose: true,
+        dry: false
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[chunkhash].css'
-    })
+      filename: '[name].[contenthash:8].css'
+    }),
+    new webpack.HashedModuleIdsPlugin()
   ]
 };
 

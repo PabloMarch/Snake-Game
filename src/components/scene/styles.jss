@@ -11,7 +11,6 @@ export default theme => ({
     left: 0,
     margin: 'auto',
     position: 'absolute',
-    overflow: 'hidden',
     right: 0,
     top: 0,
   },

@@ -5,20 +5,9 @@ const PATHS = require('./webpack.paths');
 const config = {
     mode: 'development',
     devtool: 'eval', // devtool: 'inline-source-map',
-    optimization: {
-      runtimeChunk: {
-        name: 'manifest',
-      },
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-             test: /[\\/]node_modules[\\/]/,
-             name: 'vendor',
-             chunks: 'initial',
-             enforce: true
-           }
-        }
-      },
+    output: {
+      path: PATHS.outputPath,
+      filename: '[name].js'
     },
     plugins: [
       // when activate it makes the game to reload completely on changes

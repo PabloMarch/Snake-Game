@@ -5,40 +5,11 @@ const PwaManifestWebpackPlugin = require('pwa-manifest-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const pkg = require('../package.json');
 const PATHS = require('./webpack.paths');
-
-const MANIFEST = {
-  'name':             pkg.description,
-  'short_name':       pkg.name,
-  'manifest_version': 1.0,
-  'version':          pkg.version,
-  'start_url':        '.',
-  'display':          'fullscreen',
-  'orientation':      'landscape',
-  'background_color': '#000000',
-  'theme_color':      '#3f51b5',
-  'icon': {
-    'src': PATHS.icon,
-    'sizes': [48, 72, 96, 144, 168, 192]
-  },
-  'applications': {
-    'gecko': {
-      'id': 'clients@orbitdevs.com'
-    },
-    'edge': {
-      'browser_action_next_to_addressbar': true
-    }
-  }
-}
+const MANIFEST = require('./manifest.config')
 
 const commonConfig = env => ({
   entry: {
-    vendor: Object.keys(pkg.dependencies),
     app: './src/index.js'
-  },
-  output: {
-    path: PATHS.outputPath,
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].[chunkhash].js',
   },
   resolve: {
     alias: {
@@ -106,6 +77,7 @@ const commonConfig = env => ({
       swDest: 'service-worker.js',
       clientsClaim: true,
       skipWaiting: true,
+      precacheManifestFilename: 'precache.[manifestHash].js',
       runtimeCaching: [{
         urlPattern: new RegExp(pkg.homepage),
         handler: 'staleWhileRevalidate'

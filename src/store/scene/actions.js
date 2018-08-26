@@ -15,7 +15,7 @@ export const pauseGame = createAction('PAUSE_GAME')
 export const updateRefPosition = createAction('UPDATE_REF_POSITION')
 export const incrementScore = createAction('INCREMENT_SCORE')
 
-// Fetch vehicles
+// Fetch game settings
 export const fetchGameSettings = () => async dispatch => {
   try {
     const response = await delay(1000) // dispatch(Api.get('api/gameSettings')) // <= Simulate fetch
