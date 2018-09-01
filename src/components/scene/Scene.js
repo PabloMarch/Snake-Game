@@ -16,7 +16,10 @@ const Scene = (props) => (
     className={props.classes.root}
     onKeyDown={e => props.handlers.keyDown(e.keyCode)}
   >
-    <section className={props.classes.limits} style={{ height: props.height, width: props.width }}>
+    <section
+      className={props.classes.limits}
+      style={{ height: props.height, width: props.width }}
+    >
       {
         props.isFetching
         ? <CircularProgress className={props.classes.loader} />

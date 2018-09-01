@@ -1,26 +1,20 @@
 import { handleActions, combineActions } from 'redux-actions'
 
 // Actions
-import {
-  setSceneSize,
-  setCurrentKey,
-  setGameSettings,
-  pauseGame,
-  updateRefPosition,
-  incrementScore
-} from './actions'
+import * as actions from './actions'
 
-const actions = combineActions(
-  setSceneSize,
-  setCurrentKey,
-  setGameSettings,
-  pauseGame,
-  updateRefPosition,
-  incrementScore
+const combinedActions = combineActions(
+  actions.setSceneSize,
+  actions.setCurrentKey,
+  actions.setGameSettings,
+  actions.pauseGame,
+  actions.updateRefPosition,
+  actions.incrementScore
 )
 
 const initialState = {
-  isGamePaused: false,
+  currentKey: 'ArrowRight',
+  isGamePaused: true,
   score: 0,
   round: 1,
   refX: 0,
@@ -28,5 +22,5 @@ const initialState = {
 }
 
 export default handleActions({
-  [ actions ]: (state, { payload }) => ({ ...state, ...payload })
+  [ combinedActions ]: (state, { payload }) => ({ ...state, ...payload })
 }, initialState)

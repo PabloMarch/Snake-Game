@@ -15,7 +15,8 @@ const commonConfig = env => ({
     alias: {
       components: PATHS.components,
       store: PATHS.store,
-      src: PATHS.app
+      src: PATHS.app,
+      lib: PATHS.lib
     },
     extensions: ['*', '.js', '.jsx', '.jss', '.json']
   },

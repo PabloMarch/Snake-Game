@@ -2,6 +2,7 @@ export default theme => ({
   root: {
     flex: '1 1 auto',
     outline: 'none',
+    overflow: 'hidden',
     position: 'relative',
     '&::-webkit-scrollbar': { display:'none' }
   },

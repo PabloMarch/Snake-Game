@@ -8,6 +8,7 @@ import Scene from './scene'
 import Character from './character'
 import Item from './item'
 import Controls from './controls'
+import Subscribe from './subscribe'
 
 class Game extends Component {
   render() {
@@ -21,6 +22,9 @@ class Game extends Component {
               <Item incrementScore={handlers.incrementScore} />
               <Character resetGame={handlers.resetGame} />
               <Controls keyDown={handlers.keyDown} />
+              {handlers.isPaused &&
+                <Subscribe startGame={handlers.startGame} />
+              }
             </Fragment>
           )}
         </Scene>

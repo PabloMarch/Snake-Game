@@ -16,10 +16,7 @@ class ControlsContainer extends PureComponent {
 
   constructor(props) {
     super(props)
-
-    this.state = {
-      value: ''
-    }
+    this.state = { value: '' }
   }
 
   onChange = e => {

@@ -37,7 +37,7 @@ class SceneContainer extends Component {
         // start keyFrame loop
         this.startLoop()
 
-        // hide loader & focus scene
+        // hide loader
         this.setState({ isFetching: false })
         this.sceneRef.focus()
       })
@@ -90,9 +90,15 @@ class SceneContainer extends Component {
     }
   }
 
-  onRestartGame = () => {
+  onStartGame = () => {
+    this.props.pauseGame({ isGamePaused: false })
+    // this.sceneRef.focus()
+    console.log(this.sceneRef)
+  }
+
+  onResetGame = () => {
+    this.props.pauseGame({ isGamePaused: true })
     this.props.resetGame({ round: this.props.scene.round+1 })
-    alert('YOU LOSE!!')
   }
 
   onIncrementScore = () => {
@@ -195,9 +201,11 @@ class SceneContainer extends Component {
         width={this.state.innerWidth}
         height={this.state.innerHeigth}
         handlers={{
+          isPaused: this.props.scene.isGamePaused,
           keyDown: this.onKeyDown,
-          incrementScore: this.onIncrementScore,
-          resetGame: this.onRestartGame
+          startGame: this.onStartGame,
+          resetGame: this.onResetGame,
+          incrementScore: this.onIncrementScore
         }}
       />
     )
